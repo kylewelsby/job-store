@@ -1,5 +1,6 @@
 {
   "plugins": [
+    "inline-dotenv"
   ],
   "presets": [
     ["@babel/preset-env", { "targets": { "node": true }}]

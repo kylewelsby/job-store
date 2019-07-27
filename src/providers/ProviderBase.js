@@ -1,12 +1,14 @@
 import axios from 'axios'
 import debug from 'debug'
+import EventEmitter from 'events'
 
 /** Base Class for Provider */
-export default class ProviderBase {
+export default class ProviderBase extends EventEmitter {
   /**
    * @public
    * Performs the `_makeRequest` or fail if timeout exceeded
-   * @returns {Promise}
+   * @returns {Promise<object|error>} resolves the request within a given time
+   * or reject with timeout error
    */
   async fetch () {
     const timeout = this._timeout(this.TIMEOUT)
