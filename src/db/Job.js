@@ -26,6 +26,9 @@ const Schema = new mongoose.Schema({
       ref: 'Taxonomy'
     }
   ],
+  url: {
+    type: String
+  },
   publishedAt: {
     type: Date,
     default: Date.now,

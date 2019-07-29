@@ -8,7 +8,7 @@ import ProviderBase from './ProviderBase'
 export default class RemoteOK extends ProviderBase {
   constructor () {
     super()
-    this.TIMEOUT = 60000
+    this.TIMEOUT = 300 * 1000 // timeout after 5 minutes
     this.PROVIDER = 'REMOTE_OK'
     this.ENDPOINT = 'https://remoteok.io/api'
   }
@@ -32,7 +32,7 @@ export default class RemoteOK extends ProviderBase {
    * @returns {object} The job result type
    */
   async _handleResults (response) {
-    const results = response
+    let results = response
       .filter(this._isValidResult)
       .map(result => ({
         raw: result,
@@ -45,9 +45,7 @@ export default class RemoteOK extends ProviderBase {
         publishedAt: Date.parse(result.date)
       }))
     this.log(`Found ${results.length} jobs`)
-
-    // emit each row to be inserted into the database as soon as it is ready
-    results.forEach(item => this.emit('data', item))
+    results = await this._enhanceDescriptions(results)
     return results
   }
 
@@ -63,6 +61,7 @@ export default class RemoteOK extends ProviderBase {
         const description = await this._fetchDescription(result.url)
         if (description) {
           results[index].description = description
+          this.emit('data', results[index])
           enhancedCount = enhancedCount + 1
         }
       } catch (e) {

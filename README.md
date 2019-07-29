@@ -19,7 +19,7 @@ npm install
 ## Usage
 
 ```sh
-npm run start
+DEBUG=job-store:* npm run start
 ```
 
 ## Run tests

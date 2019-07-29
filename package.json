@@ -4,6 +4,7 @@
   "description": "Store available jobs from many providers (code challenge)",
   "main": "src/index.js",
   "scripts": {
+    "prestart": "babel-node bin/prestart.js",
     "start": "babel-node src/index.js",
     "test": "jest -ci"
   },
